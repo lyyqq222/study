@@ -13,4 +13,4 @@ ssh-keygen -t rsa
 ssh -T git@github.com 进行验证
 git remote add 远程仓库名称 远程仓库地址 设置本地仓库与远程仓库关联
 git pull 远程仓库名称 master 将远程仓库的内容同步到本地仓库
-git push 远程仓库名称 maste 将本地仓库的内容同步到远程仓库
+git push 远程仓库名称 master 将本地仓库的内容同步到远程仓库
