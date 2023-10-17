@@ -1,2 +1,0 @@
-ip nat inside source static 内网ip 外网接口ip
-ip nat inside source static 协议 内网ip 端口 外网接口ip 端口

@@ -1,3 +1,0 @@
-line vty 0
-password 密码
-access-class acl表 in
