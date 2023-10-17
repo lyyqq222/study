@@ -1,0 +1,39 @@
+域名
+www.baidu.com
+三级   二级   一级
+从右往左分级域名
+DNS解析
+使用Bind服务程序
+nslookup		//查看解析指令
+正向解析	查询域名得到ip
+反向解析	查询ip得到域名
+Bind配置和目录
+yum install bind* -y		//安装
+/etc/named.conf		//主配置文件
+/etc/name.rfcxxxx.zones	//区域配置文件
+/var/named		//区域数据文件路径 存放正向与反向解析模板
+/var/named/named.ca	//根域文件
+配置步骤
+在主配置文件修改主服务器
+listen-on port 53 {any;}
+修改辅助DNS服务器
+allow-query {any;}
+修改区域配置文件添加规则
+复制上方进行修改
+zone "10.168.192.in-addr.arpa"	反向解析
+zone "域名"			正向解析
+file "路径"				存放在区域数据文件路径 
+配置正反解析
+cp -p 文件	//复制文件时保留文件属性
+域名	A	IP
+IP	PTR	域名
+配置反向解析时域名需要以.结尾
+systemctl restart named	//重启服务
+systemctl enable named	//开机自启服务
+type slave		//类型为辅助服务器
+allow-update{none}
+masters{ip}
+关防火墙
+systemctl stop firewalld
+systemctl disable firewalld
+setenforce 0

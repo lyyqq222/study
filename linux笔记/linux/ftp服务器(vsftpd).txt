@@ -1,0 +1,99 @@
+ftp服务基于TCP/IP协议
+安装和配置vsftp
+服务器在21端口侦听请求
+客户端在大于1024端口进行连接
+侦听到请求后开启20端口
+服务器在20端口传输文件
+客户端在大于1024端口进行传输文件
+断开连接时会自动释放
+登录ftp ip
+默认用户ftp/anonymous
+
+vaftpd默认目录
+服务目录		/etc/vsftpd
+主配置文件	/etc/vsftpd/vsftpd.conf
+默认主路径	/var/ftp
+默认匿名路径	/var/ftp/pub
+黑白名单		/etc/vsftpd/user_list
+访问控制路径	/etc/vsftpd/ftpusers
+
+anonymous_enable=YES	允许匿名用户登录
+anon_root=/var/ftp	设置匿名用户的根目录为/var/ftp
+anon_upload_enable=YES	允许匿名用户上传文件
+anon_mkdir_write_enable=YES	允许匿名用户创建文件夹
+local_enable=YES	允许本地用户登录
+local_root=/opt/ftp/users	设置本地用户的ftp根目录为/opt/ftp/users
+write_enable=YES	对登录用户开启写权限
+local_umask=022	本地用户的文件生成掩码为022
+
+配置用户目录锁定
+<开始配置文件编辑>
+chroot_local_user=yes		//限制所有用户在主目录最重要
+chroot_list_enable=yes		//启用限制用户名单
+chroot_list_file=/etc/vsftpd/chroot_list	//限制用户名单目录
+allow_writeable_chroot=yes		//这个东西好像是必须要的
+<结束配置文件编辑>
+
+配置用户隔离
+<开始配置文件编辑>
+user_config_dir=自定义路径
+(在此路径中创建与用户名相同的文件，文件内配置如下)
+(local_root=用户家目录)
+allow_writeable_chroot=yes
+<结束配置文件编辑>
+当/etc/vsftpd/vsftpd.conf文件中的“userlist_enable”和“userlist_deny”的值都为 “YES时”，在/etc/vstpd/user_list文件中列出的用户不能访问FTP服务器
+当/etc/vsftpd/vsftpd.conf文件中的“userlist_enable”的取值为YES而“userlist_deny”的取值为NO时，只有/etc/vstpd/user_list文件中列出的用户才能访问vsftp服务器。
+
+登录成功进入到当前用户的家目录
+若设置了用户隔离则到设定目录
+上传 put 		//默认上传到当前用户的家目录 所有上传的文件都是登录前所在的目录里的文件
+下载 get		//将家目录的文件下载到登录前所在的目录
+
+虚拟用户的创建
+虚拟用户可以单独设置其读写权限
+
+创建虚拟用户对应目录 权限为777
+chmod 777 目录
+在/etc/vsftpd目录下建立虚拟用户账号文件xxx.list
+配置账号文件 单数行账号 双数行密码
+安装数据库软件 libdb
+生成数据库文件
+db_load -T -t hash -f 账号文件目录 数据库目录
+创建一个用于映射的本地用户
+配置其家目录并且不能登录系统
+useradd -d 家目录 -s /sbin/nologin
+配置PAM认证添加虚拟用户登录认证并注释掉之前的
+auth required pam_userdb.so db=数据库目录不要后缀 
+account required pam_userdb.so db=数据库目录不要后缀 
+如果同时要使用虚拟和本地用户将required改为sufficient
+修改主配置文件
+guest_enable=yes			启用虚拟账号
+guest_username=vftpuser		配置虚拟账号映射的本地账号
+user_config_dir=/etc/vsftpd/vuser_dir	用户配置文件路径
+allow_writeable_chroot=YES		所有的用户都将拥有chroot权限
+
+修改虚拟账户配置文件
+write_enable=[YES|NO]		开启虚拟账号写入权限
+anon_world_readable_only=[YES|NO]	当为YES时，文件夹的"o"权限必须有只读权限才能下载，若设置为NO，则只要所有者有读权限即可下载
+anon_upload_enable=[YES|NO]	开启虚拟账号上传权限
+anon_mkdir_write_enable=[YES|NO]	开启虚拟账号建立目录权限
+anon_other_write_enable=[YES|NO]	开启虚拟账号删除权限
+local_root=目录			虚拟用户对应的FTP根目录路径，如果没有这项则默认指向映射的本地用户目录
+虚拟用户寄生于本地用户登录
+# 禁止上传.docx文件
+deny_file={*.docx}
+
+总结创建虚拟用户步骤
+创建虚拟用户家目录将其权限设置为777
+创建用于映射的本地用户
+建立虚拟用户数据文件
+转为数据库文件
+配置pam认证
+配置vsftpd.conf开启虚拟用户设置用户配置文件路径
+设置用户配置文件
+按题目配置用户权限文件
+
+关防火墙
+systemctl stop firewalld
+systemctl disable firewalld
+setenforce 0

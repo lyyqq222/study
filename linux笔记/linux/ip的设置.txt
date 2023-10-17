@@ -1,0 +1,5 @@
+使用nmtui工具进行设置ip与网关
+systemctl restart NetworkManager
+nmcli networking off
+nmcli networking on
+使用ip add查看

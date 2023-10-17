@@ -1,0 +1,33 @@
+用户组管理+权限管理+acl访问控制
+用户
+su 用户名				//切换用户
+useradd [可选参数] 用户名		//新增用户
+-d	//指定主目录
+-g	//指定用户组
+-G	//指定附加组
+-s	//指定shell(bash,zsh)
+userdel [-r] 用户名			//删除用户(同时删除根目录)
+cat /etc/passwd			//查看所有用户和用户的shell
+passwd -l 用户名			//锁用户
+passwd -u 用户名			//解用户
+passwd -d 用户名			//删密码
+usermod 	[选项] [用户名]		//修改账号
+-l 更改后 更改前	//更改用户名
+-a -G 群组 用户名	//把用户再添加到附属组里
+(大部分参数与useradd相同)
+chsh -s shell路径 用户名		//更改用户的shell
+组
+groupadd 组			//新建组
+groupdel 组			//删除组
+gpasswd -a 组			//添加用户到组
+gpasswd -d 组			//删除用户到组
+groupmod -U 用户 组		//更改组的用户
+cat /etc/group			//查看所有组
+权限
+chmod [rwx对应421] 文件地址		//更改文件的访问权限(r读x执行w写)
+chown [用户]:[组] [文件]		//更改文件的所有者和组
+setfacl -b 文件			//删除所有的acl参数
+setfacl -m u:用户:权限 文件		//给文件添加用户的acl权限
+setfacl -m g:组:权限 文件		//给文件添加用户的acl权限
+setfacl -m m:权限 目录		//改mask权限 所有者不会受影响
+getfacl 文件			//查看文件权限和所属

@@ -1,0 +1,13 @@
+三步创建  物理卷>>卷组>>逻辑卷
+pvcreat 物理介质 	 		//物理卷创建 
+vgcreat 名称 物理卷名称		//卷组创建
+lvcreat -L 大小 -n 名称 卷组名称	//逻辑卷创建
+举个例子
+lvcreat -L 10G -n lv vg
+lvcreat -L 100%free -n lv vg
+默认创建/etc/mapper/下
+需要挂载使用
+mkfs.格式	文件	//格式化逻辑卷
+配置开机挂载 
+路径	/etc/fstab
+格式	挂载目标	挂载路径	挂载格式	defaults 0 0

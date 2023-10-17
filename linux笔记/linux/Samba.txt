@@ -1,0 +1,44 @@
+samba共享文件协议
+smbd进程(处理SMB数据包)
+TCP139端口
+nmbd进程(使其他主机能浏览samba服务器)
+UDP137/138端口
+配置文件
+路径/etc/Samba
+主配置文件/etc/samba/smb.conf
+[global]	全局配置
+workgroup 	= name		设置工作组名称
+netbios name 	= name		设置主机名称
+serverstring 	= Samba server	设置服务器说明文字
+log file 		= /var/log/log.%m	设置日志文件的存储文件名
+max log size 	= 100		设置日志文件的最大大小
+security		 = share		设置安全模式为共享
+passdb backend	 = tdbsam	设置用户认证方式为tdbsam
+load printer 	= no		禁止加载打印
+[Share]	定义共享资源的名称
+comment		 = smb warehouse	设置共享资源的注释(说实话没啥用)
+path 		= /tmp	设置实际的共享目录路径
+writable		 = yes	设置共享资源为可写入
+browseable 	= yes	设置共享资源可被所有用户浏览
+guest ok 		= yes	允许匿名用户登录共享资源
+valid users 	= 用户名	设置可以访问共享资源的用户
+valid users	 = @组名	设置可以访问共享资源的用户组
+write list 		= 用户名 设置可以写的用户
+以上的用户均可使用,分隔
+readonly 		= yes	将共享资源设置为只读
+readonly 		= no	将共享资源设置为读写
+hosts deny 	= 192.168.0.0	禁止192.168.0.0/24网段的IP地址访问共享资源
+hosts allow 	= 192.168.0.24	允许192.168.0.24 IP地址访问共享资源
+public 		= yes	允许匿名访问共享资源机
+create mask	= 0xxx
+directory mask	= 0xxx
+如果前面为1为粘滞位(除了创建者有权限其他用户都不可删除)
+force directory mode = 1000   
+设置超级管理员
+要和chown 设置所有者一起使用
+
+设置smb用户密码
+smbpasswd -a 用户名
+-a为强制执行
+登录
+smbclient -U 用户 //本机IP/共享资源名称

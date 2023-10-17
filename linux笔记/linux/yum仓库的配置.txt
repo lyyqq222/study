@@ -1,0 +1,21 @@
+！前置：ip的配置
+yum仓库配配置
+地址/etc/yum.repos.d/
+初始rm * -rf
+新建一个.repo文件，名字自定义
+写入以下内容
+[AppStream]	//可更改
+baseurl=file://【cdrom挂载路径 例如 /root/cdrom】/AppStream
+gpgcheck=0
+enable=1
+[BaseOS]	//可更改
+baseurl=file://【cdrom挂载路径 例如 /root/cdrom】/BaseOS
+gpgcheck=0
+enable=1
+
+常用yum指令
+yum install 名称
+yum install 名称*	//安装此名称下所有的软件
+yum install 名称 -y	//自动确认
+yum update 	//自动更新所有
+yum remove 名称 	//删除软件

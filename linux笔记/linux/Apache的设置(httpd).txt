@@ -1,0 +1,26 @@
+安装命令
+yum install httpd* -y
+目录与存放位置
+/etc/httpd		//服务目录
+/etc/httpd/conf/httpd.conf	//主配置文件
+/var/www/html		//网站数据目录（可通过主配置文件更改）
+/var/log/httpd/access_log	//访问日志
+/var/log/httpd/error_log	//错误日志
+使用
+systemctl restart httpd	//重启apache
+如何更改网站目录与网站文件名称
+<virtualhost *:80>			//设置访问端口为80
+documentroot /web/www/html	//主目录指定路径
+<directory "/web/www/html">	//设置路径
+allowoverride none			//不懂但是很难记
+require all granted（denied）		//允许(拒绝)所有访问请求
+</directory>			//结束
+</virtualhost>			//结束
+
+Tip:更改目录网站数据目录之后需要关闭防火墙
+systemctl stop firewlld
+setenforce 0
+Tip:重启之后会重置防火墙状态
+双开网页不仅需要重新改变端口
+还需要添加监听端口
+Listen 端口
