@@ -1,0 +1,14 @@
+局域网IP地址
+A类 10.0.0.0-10.255.255.255		1个
+B类 172.16.0.0-172.31.255.255	16个
+C类 192.168.0.0-192.168.255.255	256个
+(1) 静态NAT
+Router(config)#ip nat inside source static [inside-ip-address] [global-ip-address]
+(2) 在接口启用NAT
+Router(config)#interface fastEthernet 0/0
+Router(config-if)#ip nat inside                  #内网接口地址
+Router(config-if)#interface fastEthernet 1/0
+Router(config-if)#ip nat outside               #外网接口地址
+动态NAT配置
+1.建立IP地址池
+Router(config)#ip nat pool [pool-name] [start-IP-address] [end-IP-address] netmask [net-mask]

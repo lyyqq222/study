@@ -1,0 +1,18 @@
+ACL访问控制表
+标准
+ip access-list 表类型:标准 表名称
+permit IP 反掩码
+deny IP 反掩码
+拓展
+ip access-list 表类型:拓展 表名称
+permit 协议 源IP 反掩码 目标IP 反掩码 条件 端口号
+deny 协议 源IP 反掩码 目标IP 反掩码 条件 端口号
+配置在端口
+进端口 ip access-group ACL表名称 in/out
+常用端口和协议
+PING 协议 ICMP
+配置IP之间 IP
+配置端口之间 TCP/UDP
+ftp 20/21
+web 80
+DNS 53

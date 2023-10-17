@@ -1,0 +1,9 @@
+DHCP中继
+-service dhcp				开启DHCP
+进入网段或端口
+-ip helper-address dhcp服务器ip		在此网段中继DHCP
+将三层交换机作为DHCP服务器
+-ip dhcp pool 名称				创建池
+-network 分配IP地址 掩码			设置分配的IP地址
+-defaul-router 网关地址			设置网关地址
+-ip dhcp excluded-address 剔除IP的地址		配置不分配的IP地址

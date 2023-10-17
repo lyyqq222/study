@@ -1,0 +1,3 @@
+interface port-channel 1
+进入接口
+channel-group 1 mode on	//开启这个接口的LACP
